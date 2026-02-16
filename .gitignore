@@ -1,1 +1,5 @@
 hw1/
+homework1/src/__init__.py
+homework1/tests/__init__.py
+homework1/__pycache__
+homework1/tests/__pycache__

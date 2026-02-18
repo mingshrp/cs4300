@@ -1,4 +1,4 @@
-# Various data types
+# Explanation: Each function returns a specific data type
 
 def integer_type():
     return 1234

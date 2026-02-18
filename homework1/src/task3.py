@@ -1,5 +1,9 @@
-# if statement
+# Explanation: 
+# 1. Check if a number is positive, negative, or zero
+# 2. Generate the first ten prime numbers
+# 3. Calculate the sum of numbers from 1 to 100 using while loop
 
+# if statement
 def check_number(num):
     if num > 0:
         return "Positive"

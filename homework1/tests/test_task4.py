@@ -23,3 +23,6 @@ def test_discount_int_float():
 def test_zero_discount():
     assert calculate_discount(50, 0) == 50  # price stays the same
 
+# Case 6: Account for full discount
+def test_full_discount():
+    assert calculate_discount(300, 100) == 0 

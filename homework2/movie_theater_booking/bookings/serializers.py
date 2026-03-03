@@ -4,7 +4,8 @@ from .models import Movie, Seat, Booking
 
 # Define serializer classes: map Django models to JSON representations and validate API endpoints
 
-class Meta:
+class MovieSerializer(serializers.ModelSerializer):
+    class Meta:
         # Use movie model from models.py
         model = Movie
         fields = ['id', 'title', 'description', 'release_date', 'duration']
@@ -20,5 +21,5 @@ class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
         fields = ['id', 'movie', 'seat', 'user', 'booking_date']
-        # not allowed to manually set booking date 
-        read_only_fields = ['booking_date']
+        # User not allowed to manually modifiy booking date AND user ID
+        read_only_fields = ['booking_date', 'user']

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Theater Booking</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+          rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .navbar-brand {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'movie_list' %}">
+            🎬 Movie Booking
+        </a>
+
+        <div>
+            <a class="btn btn-outline-primary me-2" href="{% url 'movie_list' %}">
+                Movies
+            </a>
+            <a class="btn btn-outline-secondary" href="{% url 'booking_history' %}">
+                My Bookings
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content Container -->
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<!-- Footer -->
+<footer class="text-center mt-5 mb-3 text-muted">
+    <small>© 2026 Movie Theater Booking System</small>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

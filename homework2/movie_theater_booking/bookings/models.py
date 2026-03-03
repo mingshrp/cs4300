@@ -11,17 +11,18 @@ class Movie(models.Model):
         return self.title
 
 class Seat(models.Model):
-    seat_number = models.CharField(max_length=10, unique=True)
-    is_booked = models.BooleanField(default=False) # False = Available 
+    seat_number = models.CharField(max_length=10, unique=True)  
+    is_booked = models.BooleanField(default=False)              # Booking status (False=available vs True=booked)
 
     def __str__(self):
-        return self.seat_number
+        return f"{self.seat_number} - {'Booked' if self.is_booked else 'Available'}"
 
 class Booking(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="bookings")
-    seat = models.OneToOneField(Seat, on_delete=models.CASCADE, related_name="booking") # prevent double booking (each seat = one booking)
+    seat = models.OneToOneField(Seat, on_delete=models.CASCADE, related_name="booking") # Prevents same seat being booked twice
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="bookings")
     booking_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.user} booked {self.seat} for {self.movie}"
+

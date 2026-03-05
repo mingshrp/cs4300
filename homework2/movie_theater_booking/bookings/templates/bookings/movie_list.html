@@ -1,45 +1,194 @@
 {% extends "bookings/base.html" %}
 {% load static %}
 
-{% block title %}Movies{% endblock %}
+{% block title %}Welcome{% endblock %}
 
 {% block content %}
-<h1 class="text-center pt-3 pb-5">Available Movies</h1>
+<div class="container py-4"> 
 
-<div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-4">
-    {% for movie in movies %}
-        <div class="col">
-            <div class="card bg-transparent border-0 text-center h-100">
+  <!-- Hero / Welcome -->
+  <div class="row align-items-center g-4 mb-4">
+    <div class="col-lg-6">
+        <h1 id="welcome-title">Welcome to MovieTix!</h1>
+        <p class="text-secondary mb-3">
+        Browse what’s playing, check details, and book your seat in seconds.
+      </p>
+    </div>
 
-                <div class="card-body px-0 pt-3">
-                    <h6 class="card-title mb-0 text-white">{{ movie.title }}</h6>
-                    <small class="text-secondary">
-                        {{ movie.duration }} min
-                    </small>
+    <!-- Slideshow / Carousel -->
+    <div class="col-lg-14">
+      <div class="card bg-dark border-0 shadow-lg overflow-hidden">
+        <div class="card-body p-0">
+
+          <div id="movieCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+              {% for movie in movies|slice:":5" %}
+                <button type="button"
+                        data-bs-target="#movieCarousel"
+                        data-bs-slide-to="{{ forloop.counter0 }}"
+                        class="{% if forloop.first %}active{% endif %}"
+                        aria-current="{% if forloop.first %}true{% endif %}"
+                        aria-label="Slide {{ forloop.counter }}"></button>
+              {% endfor %}
+            </div>
+
+            <div class="carousel-inner">
+              {% for movie in movies|slice:":5" %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                  <div class="carousel-hero">
+
+                    {% if movie.poster %}
+                      <img src="{{ movie.poster.url }}" class="carousel-img" alt="{{ movie.title }} poster">
+                    {% else %}
+                      <div class="carousel-fallback d-flex align-items-center justify-content-center">
+                        <div class="text-center">
+                          <div class="display-5 text-white-50 fw-semibold mb-2">
+                            {{ movie.title|slice:":1" }}
+                          </div>
+                          <div class="text-secondary">No poster uploaded</div>
+                        </div>
+                      </div>
+                    {% endif %}
+
+                    <div class="carousel-overlay"></div>
+
+                    <div class="carousel-caption text-start">
+                      <h5 class="text-white fw-semibold mb-1">{{ movie.title }}</h5>
+                      <p class="text-white-50 mb-2">
+                        {{ movie.duration }} min{% if movie.release_date %} • {{ movie.release_date }}{% endif %}
+                      </p>
+                      <a href="{% url 'movie_detail' movie.id %}" class="btn btn-sm btn-primary">
+                        View Details
+                      </a>
+                    </div>
+
+                  </div>
                 </div>
+              {% empty %}
+                <div class="carousel-item active">
+                  <div class="carousel-hero">
+                    <div class="carousel-fallback d-flex align-items-center justify-content-center">
+                      <div class="text-center">
+                        <div class="h4 text-white mb-2">No movies yet</div>
+                        <div class="text-secondary">Add movies in the admin panel to populate the slideshow.</div>
+                      </div>
+                    </div>
+                    <div class="carousel-overlay"></div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
 
-            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#movieCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+
+            <button class="carousel-control-next" type="button" data-bs-target="#movieCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- “Now Showing” grid -->
+  <div class="d-flex align-items-center justify-content-between mt-4 mb-3">
+    <h2 class="h5 text-white mb-0">Now Showing</h2>
+  </div>
+
+  <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-4">
+    {% for movie in movies|slice:":12" %}
+      <div class="col">
+        <a href="{% url 'movie_detail' movie.id %}" class="text-decoration-none">
+          <div class="card bg-dark border-0 h-100 shadow-sm poster-card">
+            <div class="poster-wrap">
+              {% if movie.poster %}
+                <img src="{{ movie.poster.url }}" alt="{{ movie.title }} poster">
+              {% else %}
+                <div class="poster-fallback d-flex align-items-center justify-content-center">
+                  <span class="text-white-50 fw-semibold">{{ movie.title|slice:":1" }}</span>
+                </div>
+              {% endif %}
+            </div>
+            <div class="card-body p-2">
+              <div class="text-white small fw-semibold text-truncate">{{ movie.title }}</div>
+              <div class="text-secondary small">{{ movie.duration }} min</div>
+            </div>
+          </div>
+        </a>
+      </div>
     {% empty %}
-        <div class="col-12">
-            <div class="alert alert-secondary">
-                No movies available yet. Add some in the admin panel.
-            </div>
+      <div class="col-12">
+        <div class="alert alert-secondary mb-0">
+          No movies available yet. Add some in the admin panel.
         </div>
+      </div>
     {% endfor %}
+  </div>
+
 </div>
 
 <style>
-.movie-poster {
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+#welcome-title {
+    font-size: 3.5rem;        
+    color: white;
+    font-weight: 600;         
+    margin-bottom: 0.5rem;    
 }
-.movie-poster:hover {
-    transform: scale(1.03);
+/* Carousel styling */
+.carousel-hero{
+  position: relative;
+  height: 400px;
+  background: rgba(255,255,255,0.04);
 }
-.movie-poster-placeholder {
-    background-color: rgba(255,255,255,0.06);
-    color: rgba(255,255,255,0.6);
+
+.carousel-img{
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  display: block;
+}
+
+.carousel-fallback{
+  height: 360px;
+  background: rgba(255,255,255,0.06);
+}
+
+.carousel-overlay{
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.25) 55%, rgba(0,0,0,0.15) 100%);
+}
+
+.carousel-caption{
+  position: absolute;
+  left: 1.25rem;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 2;
+}
+
+/* Poster grid cards */
+.poster-wrap{
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  background: rgba(255,255,255,0.06);
+}
+.poster-wrap img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.poster-card{
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.poster-card:hover{
+  transform: translateY(-2px);
 }
 </style>
-
 {% endblock %}

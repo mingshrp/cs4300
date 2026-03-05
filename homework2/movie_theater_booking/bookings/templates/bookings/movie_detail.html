@@ -1,0 +1,39 @@
+{% extends "bookings/base.html" %}
+
+{% block title %}{{ movie.title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <a href="{% url 'movie_list' %}" class="btn btn-outline-light btn-sm">← Back to Movies</a>
+    <a href="{% url 'booking_history' %}" class="btn btn-outline-light btn-sm">Booking History</a>
+  </div>
+
+  <div class="card bg-dark border-0 shadow-sm">
+    <div class="card-body p-4">
+      <h1 class="h3 text-white mb-1">{{ movie.title }}</h1>
+
+      <p class="text-secondary mb-3">
+        {% if movie.release_date %}Release: {{ movie.release_date }} • {% endif %}
+        Duration: {{ movie.duration }} min
+      </p>
+
+      <h2 class="h6 text-white">Description</h2>
+      <p class="text-secondary mb-4">
+        {% if movie.description %}
+          {{ movie.description }}
+        {% else %}
+          No description available.
+        {% endif %}
+      </p>
+
+      <!-- Link this to your seat booking URL -->
+      <a href="{% url 'seat_booking' movie.id %}" class="btn btn-primary">
+        Book Seats
+      </a>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

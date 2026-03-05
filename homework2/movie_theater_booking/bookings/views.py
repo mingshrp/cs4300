@@ -49,8 +49,7 @@ class BookingViewSet(viewsets.ModelViewSet):
         """
         Return only bookings belonging to the logged-in user.
         """
-        return Booking.objects.filter(user=self.request.user)
-
+        return Booking.objects.all()
     def create(self, request, *args, **kwargs):
         """
         Create a booking for the authenticated user.

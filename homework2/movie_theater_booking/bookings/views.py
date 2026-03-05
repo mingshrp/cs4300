@@ -124,3 +124,6 @@ def booking_history(request):
         "bookings": bookings
     })
 
+def movie_detail(request, pk):
+    movie = get_object_or_404(Movie, pk=pk)
+    return render(request, "bookings/movie_detail.html", {"movie": movie})

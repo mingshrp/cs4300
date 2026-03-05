@@ -6,6 +6,9 @@ class Movie(models.Model):
     description = models.TextField(blank=True)
     release_date = models.DateField()
     duration = models.PositiveIntegerField(help_text="Duration in minutes")
+    # Poster field added to allow storing and displaying movie poster images
+    poster = models.ImageField(upload_to="movie_posters/", blank=True, null=True)  
+
 
     def __str__(self):
         return self.title

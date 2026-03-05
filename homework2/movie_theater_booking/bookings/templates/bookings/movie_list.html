@@ -4,9 +4,12 @@
 {% block title %}Welcome{% endblock %}
 
 {% block content %}
-<div class="container py-4"> 
+<!-- Displays all movies in a grid. Each movie card links to its detail page
+so users can view more information and book seats. -->
 
-  <!-- Hero / Welcome -->
+<div class="container py-4">
+
+  <!-- Welcome Intro -->
   <div class="row align-items-center g-4 mb-4">
     <div class="col-lg-6">
         <h1 id="welcome-title">Welcome to MovieTix!</h1>
@@ -15,7 +18,7 @@
       </p>
     </div>
 
-    <!-- Slideshow / Carousel -->
+    <!-- Slideshow / Carousel of a few movies -->
     <div class="col-lg-14">
       <div class="card bg-dark border-0 shadow-lg overflow-hidden">
         <div class="card-body p-0">
@@ -95,7 +98,7 @@
     </div>
   </div>
 
-  <!-- “Now Showing” grid -->
+  <!-- Now Showing grid of movies -->
   <div class="d-flex align-items-center justify-content-between mt-4 mb-3">
     <h2 class="h5 text-white mb-0">Now Showing</h2>
   </div>

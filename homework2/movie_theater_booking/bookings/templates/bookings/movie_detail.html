@@ -1,8 +1,10 @@
 {% extends "bookings/base.html" %}
-
 {% block title %}{{ movie.title }}{% endblock %}
-
 {% block content %}
+
+<!-- I added this additional HTML page so users can click on movies from the movie list
+     and be taken to a detailed view showing the movie description and booking info -->
+
 <div class="container py-4">
 
   <div class="d-flex align-items-center justify-content-between mb-3">

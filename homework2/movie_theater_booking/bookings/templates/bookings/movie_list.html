@@ -1,3 +1,45 @@
 {% extends "bookings/base.html" %}
-{% block title %} Available Movies {% endblock %}
+{% load static %}
 
+{% block title %}Movies{% endblock %}
+
+{% block content %}
+<h1 class="text-center pt-3 pb-5">Available Movies</h1>
+
+<div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-4">
+    {% for movie in movies %}
+        <div class="col">
+            <div class="card bg-transparent border-0 text-center h-100">
+
+                <div class="card-body px-0 pt-3">
+                    <h6 class="card-title mb-0 text-white">{{ movie.title }}</h6>
+                    <small class="text-secondary">
+                        {{ movie.duration }} min
+                    </small>
+                </div>
+
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="alert alert-secondary">
+                No movies available yet. Add some in the admin panel.
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<style>
+.movie-poster {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.movie-poster:hover {
+    transform: scale(1.03);
+}
+.movie-poster-placeholder {
+    background-color: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.6);
+}
+</style>
+
+{% endblock %}

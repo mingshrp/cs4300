@@ -18,7 +18,7 @@ class MovieViewSet(viewsets.ModelViewSet):
     """ 
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
 class SeatViewSet(viewsets.ModelViewSet):
     """
@@ -29,7 +29,7 @@ class SeatViewSet(viewsets.ModelViewSet):
     """
     queryset = Seat.objects.all()
     serializer_class = SeatSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
 class BookingViewSet(viewsets.ModelViewSet):
     """
@@ -43,7 +43,7 @@ class BookingViewSet(viewsets.ModelViewSet):
     """
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
         """

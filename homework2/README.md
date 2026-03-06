@@ -92,6 +92,11 @@ python manage.py behave
 python manage.py behave features/movies.feature
 python manage.py behave features/bookings.feature
 ```
+## Deployment
+
+This project is deployed on Render and accessible at:
+
+**https://cs4300-mk5q.onrender.com**
 
 ## AI Usage
 

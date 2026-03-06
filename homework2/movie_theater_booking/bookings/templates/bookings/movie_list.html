@@ -1,7 +1,5 @@
 {% extends "bookings/base.html" %}
-
 {% block title %}Welcome{% endblock %}
-
 {% block content %}
 <!-- Displays all movies in a grid. Each movie card links to its detail page
 so users can view more information and book seats. -->
@@ -29,22 +27,33 @@ so users can view more information and book seats. -->
                 class="{% if forloop.first %}active{% endif %}" aria-current="{% if forloop.first %}true{% endif %}"
                 aria-label="Slide {{ forloop.counter }}"></button>
               {% endfor %}
+            </div>{% if movie.banner %}
+            <img src="{{ movie.banner.url }}" class="carousel-img" alt="{{ movie.title }} banner">
+            {% else %}
+            <div class="carousel-fallback d-flex align-items-center justify-content-center">
+              <div class="text-center">
+                <div class="display-5 text-white-50 fw-semibold mb-2">
+                  {{ movie.title|slice:":1" }}
+                </div>
+                <div class="text-secondary">No banner uploaded</div>
+              </div>
             </div>
+            {% endif %}
 
             <div class="carousel-inner">
               {% for movie in movies|slice:":5" %}
               <div class="carousel-item {% if forloop.first %}active{% endif %}">
                 <div class="carousel-hero">
 
-                  {% if movie.poster %}
-                  <img src="{{ movie.poster.url }}" class="carousel-img" alt="{{ movie.title }} poster">
+                  {% if movie.banner %}
+                  <img src="{{ movie.banner.url }}" class="carousel-img" alt="{{ movie.title }} banner">
                   {% else %}
                   <div class="carousel-fallback d-flex align-items-center justify-content-center">
                     <div class="text-center">
                       <div class="display-5 text-white-50 fw-semibold mb-2">
                         {{ movie.title|slice:":1" }}
                       </div>
-                      <div class="text-secondary">No poster uploaded</div>
+                      <div class="text-secondary">No banner uploaded</div>
                     </div>
                   </div>
                   {% endif %}
@@ -142,19 +151,25 @@ so users can view more information and book seats. -->
   /* Carousel styling */
   .carousel-hero {
     position: relative;
-    height: 400px;
+    height: 550px;
+    overflow: hidden;
     background: rgba(255, 255, 255, 0.04);
   }
 
-  .carousel-img {
+  .carousel-img,
+  .carousel-fallback {
     width: 100%;
-    height: 500px;
-    object-fit: cover;
+    height: 100%;
     display: block;
   }
 
+  .carousel-img {
+    object-fit: cover;
+  }
+
   .carousel-fallback {
-    height: 360px;
+    position: absolute;
+    inset: 0;
     background: rgba(255, 255, 255, 0.06);
   }
 

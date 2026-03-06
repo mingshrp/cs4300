@@ -137,6 +137,7 @@ def seat_booking(request, movie_id):
         messages.success(request, "Booking confirmed!")
         return redirect("booking_history")
 
+
     return render(request, "bookings/seat_booking.html", {"movie": movie, "rows": rows})
 
 def booking_history(request):
@@ -159,5 +160,37 @@ def booking_history(request):
     })
 
 def movie_detail(request, pk):
+    """
+    Display details for a specific movie.
+
+    params:
+        request (HttpRequest): The incoming HTTP request object.
+        pk: Primary key of the movie to retrieve.
+
+    return:
+        HttpResponse: Rendered HTML page displaying the movie's details.
+    """
     movie = get_object_or_404(Movie, pk=pk)
     return render(request, "bookings/movie_detail.html", {"movie": movie})
+
+def delete_booking(request, booking_id):
+    """
+    Cancel an existing booking and free up the booked seat.
+
+    params:
+        request (HttpRequest): The incoming HTTP request object.
+        booking_id: ID of the booking to be deleted.
+
+    return:
+        HttpResponseRedirect: Redirects to the booking history page after deletion.
+    """
+    booking = get_object_or_404(Booking, id=booking_id)
+
+    if request.method == "POST":
+        seat = booking.seat
+        seat.is_booked = False
+        seat.save()
+
+        booking.delete()
+
+    return redirect("booking_history")

@@ -18,7 +18,7 @@ urlpatterns = [
     path("movies/<int:movie_id>/seats/", views.seat_booking, name="seat_booking"),
     path("history/", views.booking_history, name="booking_history"),
     path("movies/<int:pk>/", views.movie_detail, name="movie_detail"),
-
+    path("booking/delete/<int:booking_id>/", views.delete_booking, name="delete_booking"),
 ]
 
 # Add API routes under /api/

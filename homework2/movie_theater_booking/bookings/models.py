@@ -8,8 +8,8 @@ class Movie(models.Model):
     duration = models.PositiveIntegerField(help_text="Duration in minutes")
     # Poster field added to allow storing and displaying movie poster images
     poster = models.ImageField(upload_to="movie_posters/", blank=True, null=True)  
-    # Wide poster to fit slideshow of movies
-
+    # Wide banner to fit slideshow of movies
+    banner = models.ImageField(upload_to="movie_banners/", blank=True, null=True)
     def __str__(self):
         return self.title
 

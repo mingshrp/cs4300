@@ -1,13 +1,83 @@
 {% extends "bookings/base.html" %}
-{% block title %} My Bookings {% endblock %}
+{% block title %}My Bookings{% endblock %}
 
+{% block content %}
+<div class="container py-5">
 
-<div class="container py-4">
+    <!-- Page Header -->
+    <div class="mb-5">
+        <h1 class="text-white fw-semibold">My Bookings</h1>
+        <p class="text-secondary">View and manage your movie bookings</p>
+    </div>
 
-    <a href="{% url 'seat_booking' %}" class="back-link mb-3 d-inline-flex align-items-center gap-2">
-        <span class="arrow">←</span> Back to Seats
-    </a>
+    {% for booking in bookings %}
+    <div class="card bg-dark border border-secondary-subtle mb-4 shadow-sm rounded-4">
+        <div class="card-body d-flex align-items-center">
+
+            <!-- Movie Poster -->
+            <div class="me-4">
+                {% if booking.movie.poster %}
+                <img src="{{ booking.movie.poster.url }}"
+                    style="width:120px;height:180px;object-fit:cover;border-radius:10px;">
+                {% else %}
+                <div class="bg-secondary d-flex align-items-center justify-content-center"
+                    style="width:120px;height:180px;border-radius:10px;">
+                    <span class="text-white">{{ booking.movie.title|slice:":1" }}</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Booking Details -->
+            <div class="flex-grow-1">
+
+                <h3 class="text-white fw-semibold mb-2">
+                    {{ booking.movie.title }}
+                </h3>
+
+                <!-- Booked Time -->
+                <div class="text-secondary mb-3">
+                    Booked on {{ booking.booking_date|date:"M j, Y g:i A" }}
+                </div>
+
+                <div class="row text-secondary">
+
+                    <div class="col-md-3">
+                        <div class="small text-secondary">Seat</div>
+                        <div class="text-white fw-semibold">
+                            {{ booking.seat.seat_number }}
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Status + Delete -->
+            <div class="text-end">
+
+                <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill mb-3">
+                    Confirmed
+                </span>
+
+                <!-- Delete Booking -->
+                <form method="POST" action="{% url 'delete_booking' booking.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-danger btn-sm"
+                        onclick="return confirm('Are you sure you want to cancel this booking?');">
+                        Delete
+                    </button>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+    {% empty %}
+    <div class="alert alert-secondary">
+        You have no bookings yet.
+    </div>
+    {% endfor %}
+
 </div>
-
-
-
+{% endblock %}

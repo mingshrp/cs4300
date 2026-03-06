@@ -17,3 +17,43 @@ source <name_of_virtual_environment>/bin/activate
 git clone https://github.com/mingshrp/cs4300.git
 cd cs4300/homework2/movie_theater_booking
 ```
+
+**3.** Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+**4.** Run migrations to set up the database:
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+**5.** Create a superuser to access the admin panel:
+```bash
+python manage.py createsuperuser
+```
+
+You will be prompted to enter a username, email, and password. Once created, you can log in at `/admin/`.
+
+**6.** Start the development server:
+```bash
+python manage.py runserver 0.0.0.0:3000
+```
+
+The application will be available at `http://localhost:3000`.
+
+## How to Run Tests
+
+**Unit & Integration Tests:**
+```bash
+python manage.py test
+```
+
+**BDD Tests:**
+```bash
+python manage.py behave
+
+# Run a specific feature file
+python manage.py behave features/movies.feature
+python manage.py behave features/bookings.feature
+```

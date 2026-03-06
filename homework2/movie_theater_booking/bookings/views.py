@@ -51,9 +51,10 @@ class BookingViewSet(viewsets.ModelViewSet):
         Return only bookings belonging to the logged-in user.
         """
         return Booking.objects.all()
+   
     def create(self, request, *args, **kwargs):
         """
-        Create a booking for the authenticated user.
+        Create a booking.
         """
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -63,10 +64,7 @@ class BookingViewSet(viewsets.ModelViewSet):
         if seat.is_booked:
             return Response({"detail": "This seat is already booked. Please choose another."}, status=status.HTTP_409_CONFLICT)
 
-        booking = serializer.save(user=request.user)
-        seat.is_booked = True
-        seat.save()
-
+        booking = serializer.save()
         return Response(self.get_serializer(booking).data, status=status.HTTP_201_CREATED)
 
 

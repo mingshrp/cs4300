@@ -23,7 +23,7 @@ class Seat(models.Model):
 class Booking(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="bookings")
     seat = models.OneToOneField(Seat, on_delete=models.CASCADE, related_name="booking") # Prevents same seat being booked twice
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="bookings")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="bookings", null=True, blank=True)
     booking_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -2,6 +2,41 @@
 
 This project implements a movie theater booking system using Django and Django REST Framework.
 
+## Project Structure
+```
+movie_theater_booking/
+├── manage.py
+├── requirements.txt
+├── movie_theater_booking/        
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── bookings/                     # Main app
+│   ├── models.py                 # Movie, Seat, Booking models
+│   ├── views.py                  # HTML + API views
+│   ├── serializers.py            # DRF serializers
+│   ├── urls.py                   # URL routing
+│   ├── tests.py                  
+│   ├── admin.py                  
+│   └── templates/
+│       └── bookings/
+│           ├── base.html
+│           ├── movie_list.html
+│           ├── movie_detail.html
+│           ├── seat_booking.html
+│           └── booking_history.html
+├── features/                     # BDD tests
+│   ├── environment.py
+│   ├── movies.feature
+│   ├── bookings.feature
+│   ├── booking_history.feature
+│   └── steps/
+│       └── steps.py
+└── media/                        # Uploaded images
+    ├── movie_posters/
+    └── movie_banners/
+```
+
 ## How to Run the Project
 
 **1.** Create a virtual environment and activate it:
@@ -57,3 +92,12 @@ python manage.py behave
 python manage.py behave features/movies.feature
 python manage.py behave features/bookings.feature
 ```
+
+## AI Usage
+
+**ChatGPT** was used during the planning and design phase of the project.
+- Planning the overall project structure and architecture of the Django application.
+- Deciding how to organize models, views, serializers, and URLs.
+- Thinking through the relationships between the `Movie`, `Seat`, and `Booking` models before writing any code.
+- Some of the CSS styling 
+**Claude.ai** was used to assist in generating the test suite for this project (edge cases, writing feature files, debugging failed tests)

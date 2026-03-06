@@ -98,7 +98,7 @@ python manage.py behave features/bookings.feature
 **ChatGPT** was used during the planning and design phase of the project.
 - Planning the overall project structure and architecture of the Django application.
 - Deciding how to organize models, views, serializers, and URLs.
-- Thinking through the relationships between the `Movie`, `Seat`, and `Booking` models before writing any code.
-- Some of the CSS styling 
+- Thinking through the relationships between the `Movie`, `Seat`, and `Booking` models.
+- Some of the CSS styling.
 
 **Claude.ai** was used to assist in generating the test suite for this project (edge cases, writing feature files, debugging failed tests)

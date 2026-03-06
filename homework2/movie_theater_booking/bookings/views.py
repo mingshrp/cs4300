@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import viewsets, status, permissions 
 from rest_framework.response import Response
+from django.contrib import messages
 
 from .models import Movie, Seat, Booking
 from .serializers import MovieSerializer, SeatSerializer, BookingSerializer
@@ -58,6 +59,7 @@ class BookingViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
 
         seat = serializer.validated_data["seat"]
+
         if seat.is_booked:
             return Response({"detail": "This seat is already booked. Please choose another."}, status=status.HTTP_409_CONFLICT)
 
@@ -97,12 +99,45 @@ def seat_booking(request, movie_id):
         Http404: If a movie with the given ID does not exist.
     """
     movie = get_object_or_404(Movie, id=movie_id)
-    seats = Seat.objects.all()
+    seats = Seat.objects.all().order_by("seat_number")
 
-    return render(request, "bookings/seat_booking.html", {
-        "movie": movie, 
-        "seats": seats
-    })
+     # Build rows for the seat map (same idea you already have)
+    rows = []
+    row_letters = "ABCDEF"
+    for letter in row_letters:
+        row_seats = [s for s in seats if str(s.seat_number).startswith(letter)]
+        row_seats.sort(key=lambda s: int(str(s.seat_number)[1:]) if str(s.seat_number)[1:].isdigit() else 0)
+        rows.append((letter, row_seats))
+
+    if request.method == "POST":
+        seat_ids = request.POST.getlist("seat_ids")  
+
+        if not seat_ids:
+            messages.error(request, "Please select at least one seat.")
+            return redirect("seat_booking", movie_id=movie.id)
+
+        selected_seats = list(Seat.objects.filter(id__in=seat_ids))
+
+        # block double-booking
+        already = [str(s.seat_number) for s in selected_seats if Booking.objects.filter(seat=s, movie=movie).exists()]
+        if already:
+            messages.error(request, f"These seats are already booked: {', '.join(already)}")
+            return redirect("seat_booking", movie_id=movie.id)
+
+        # create bookings + mark seats booked
+        for seat in selected_seats:
+            Booking.objects.create(
+                movie=movie,
+                seat=seat,
+                user=request.user if request.user.is_authenticated else None  # remove if your Booking has no user
+            )
+            seat.is_booked = True
+            seat.save()
+
+        messages.success(request, "Booking confirmed!")
+        return redirect("booking_history")
+
+    return render(request, "bookings/seat_booking.html", {"movie": movie, "rows": rows})
 
 def booking_history(request):
     """

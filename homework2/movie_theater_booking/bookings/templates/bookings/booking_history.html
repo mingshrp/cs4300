@@ -1,2 +1,13 @@
 {% extends "bookings/base.html" %}
-{% block title %} Your Booking History {% endblock %}
+{% block title %} My Bookings {% endblock %}
+
+
+<div class="container py-4">
+
+    <a href="{% url 'seat_booking' %}" class="back-link mb-3 d-inline-flex align-items-center gap-2">
+        <span class="arrow">←</span> Back to Seats
+    </a>
+</div>
+
+
+

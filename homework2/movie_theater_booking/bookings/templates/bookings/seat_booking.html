@@ -1,2 +1,251 @@
 {% extends "bookings/base.html" %}
-{% block title %} Seat Booking {% endblock %}
+
+{% block title %}Book Seats{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+    <a href="{% url 'movie_list' %}" class="back-link mb-3 d-inline-flex align-items-center gap-2">
+        <span class="arrow">←</span> Back to Movies
+    </a>
+
+    <div class="mb-4">
+        <h1 class="movie-title mb-2">{{ movie.title }}</h1>
+
+        <div class="movie-meta">
+            <span class="badge-genre">{{ movie.release_date }}</span>
+            <span class="dot">•</span>
+            <span class="duration">{{ movie.duration }} min</span>
+        </div>
+    </div>
+
+    <div class="screen-wrap mb-4">
+        <div class="screen-line"></div>
+        <div class="screen-label">SCREEN</div>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="seat-layout">
+
+            <div class="row-labels">
+                {% for letter, row_seats in rows %}
+                <div class="row-label">{{ letter }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="seat-grid-wrap">
+
+                {% for letter, row_seats in rows %}
+                <div class="seat-row">
+
+                    {% for seat in row_seats %}
+                    <div class="seat-col">
+
+                        {% if seat.is_booked %}
+
+                        <input type="checkbox" class="btn-check" disabled id="seat{{ seat.id }}">
+
+                        <label class="seat seat-booked" for="seat{{ seat.id }}">
+                            {{ seat.seat_number|slice:"1:" }}
+                        </label>
+
+                        {% else %}
+
+                        <input type="checkbox" class="btn-check" name="seat_ids" value="{{ seat.id }}"
+                            id="seat{{ seat.id }}">
+
+                        <label class="seat seat-available" for="seat{{ seat.id }}">
+                            {{ seat.seat_number|slice:"1:" }}
+                        </label>
+
+                        {% endif %}
+
+                    </div>
+                    {% endfor %}
+
+                </div>
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        <div class="confirm-container mt-4">
+            <button type="submit" class="btn btn-primary px-4">
+                Confirm Booking
+            </button>
+        </div>
+
+    </form>
+
+    <div class="legend mt-4">
+        <div class="legend-item">
+            <span class="legend-box available"></span>
+            <span>Available</span>
+        </div>
+
+        <div class="legend-item">
+            <span class="legend-box selected"></span>
+            <span>Selected</span>
+        </div>
+
+        <div class="legend-item">
+            <span class="legend-box booked"></span>
+            <span>Booked</span>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .back-link {
+        color: rgba(255, 255, 255, 0.65);
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .movie-title {
+        color: white;
+        font-weight: 700;
+    }
+
+    .movie-meta {
+        display: flex;
+        gap: .5rem;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .badge-genre {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        padding: .2rem .55rem;
+        border-radius: .5rem;
+        font-size: .85rem;
+    }
+
+    .screen-wrap {
+        position: relative;
+        padding: 1.25rem 0 .75rem;
+    }
+
+    .screen-line {
+        height: 5px;
+        width: 100%;
+        background: #6f7283;
+        border-radius: 999px;
+    }
+
+    .screen-label {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 0;
+        color: rgba(255, 255, 255, 0.45);
+        letter-spacing: .12em;
+    }
+
+    .seat-layout {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+    }
+
+    .row-labels {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        padding-top: 6px;
+    }
+
+    .row-label {
+        color: rgba(255, 255, 255, 0.55);
+        font-weight: 600;
+        height: 46px;
+        display: flex;
+        align-items: center;
+    }
+
+    .seat-grid-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .seat-row {
+        display: flex;
+        gap: 10px;
+    }
+
+    .seat-col {
+        display: flex;
+        justify-content: center;
+    }
+
+    .seat {
+        width: 46px;
+        height: 46px;
+        border-radius: 12px 12px 4px 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 13px;
+        cursor: pointer;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: #494a62;
+        color: white;
+        transition: all .15s ease;
+    }
+
+    .seat:hover {
+        transform: scale(1.05);
+    }
+
+    .seat-booked {
+        background: rgba(255, 255, 255, 0.06);
+        color: rgba(255, 255, 255, 0.35);
+        cursor: not-allowed;
+    }
+
+    .btn-check:checked+.seat {
+        background: #e11d2e;
+        border-color: #e11d2e;
+        color: white;
+    }
+
+    .legend {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        color: rgba(255, 255, 255, 0.65);
+    }
+
+    .legend-box {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        display: inline-block;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .legend-box.available {
+        background: #494a62;
+    }
+
+    .legend-box.selected {
+        background: #e11d2e;
+    }
+
+    .legend-box.booked {
+        background: rgba(255, 255, 255, 0.06);
+    }
+
+    .confirm-container {
+        display: flex;
+        justify-content: center;
+    }
+</style>
+
+{% endblock %}

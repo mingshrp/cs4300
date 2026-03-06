@@ -3,13 +3,12 @@
 {% block content %}
 
 <!-- I added this additional HTML page so users can click on movies from the movie list
-     and be taken to a detailed view showing the movie description and booking info -->
+     and be taken to a detailed view showing the movie info and book seat button -->
 
 <div class="container py-4">
 
   <div class="d-flex align-items-center justify-content-between mb-3">
     <a href="{% url 'movie_list' %}" class="btn btn-outline-light btn-sm">← Back to Movies</a>
-    <a href="{% url 'booking_history' %}" class="btn btn-outline-light btn-sm">Booking History</a>
   </div>
 
   <div class="card bg-dark border-0 shadow-sm">
